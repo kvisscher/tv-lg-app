@@ -1,0 +1,12 @@
+body {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    padding: 1em;
+}
+
+#tv-list > div {
+    margin: 1em 0;
+}
+#tv-list span {
+    display: block;
+}

@@ -12,11 +12,15 @@ export class Client {
         this._bindEvents();
     }
 
+    on(event, callback) {
+        this._socket.on(event, callback);
+    }
+
     call(action, callback, ...rest) {
         if (callback) {
             this._socket.emit(action, ...rest, callback);
         } else {
-            this._socket.emit(action, parameters);
+            this._socket.emit(action, ...rest);
         }
     }
 

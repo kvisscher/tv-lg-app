@@ -1,0 +1,10 @@
+{
+  "id": "io.newblack.prime",
+  "version": "0.1.0",
+  "vendor": "New Black",
+  "type": "web",
+  "main": "index.html",
+  "title": "Blackflix",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png"
+}

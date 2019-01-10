@@ -2,11 +2,13 @@ import { Client } from './client';
 
 const host = 'http://kevin.duidelijkheid.nu:8081'
 
-const initialState = () => ({  });
+const initialState = () => ({
+    source: localStorage.lastSource || null
+});
 
 var state = initialState();
 
-const changeState = (changes) => {
+const setState = (changes) => {
     console.log('before change', state, changes)
 
     state = {
@@ -21,8 +23,14 @@ const changeState = (changes) => {
 
 const render = () => {
     if (state.source) {
-        const frame = document.getElementById('frame')
+        const frame = document.getElementById('frame');
         frame.src = state.source;
+    }
+
+    if (state.uid) {
+        const label = document.getElementById('label-uid');
+        label.innerText = state.uid;
+        label.style = 'display: block';
     }
 };
 
@@ -31,30 +39,25 @@ const client = new Client();
 client.onDisplayChanged = (source) => {
     console.log('onDisplayChanged', source)
 
-    changeState({ source })
+    // Store last source so when the app is started it can immediately display something
+    // also works nicely when there is no server available
+    localStorage.lastSource = source;
+
+    setState({ source })
 }
 
 client.onConnected = () => {
     client.call('iamtv', (result) => {
         console.log('my uid is', result);
         localStorage.uid = result;
-    }, localStorage.uid);
+
+        setState({ uid: result });
+    }, { uid: localStorage.uid, source: localStorage.lastSource });
+
+    client.call('x', { vendor: navigator.vendor, platform: navigator.platform });
 };
 
 client.connect(host + '/tv');
 
-setTimeout(() => {
-    window.admin = new Client();
-    
-    window.admin.onConnected = () => {
-        window.admin.call('list', (tvs) => {
-            console.log('got list of connected TVs', tvs);
+render();
 
-            for (const tv of tvs) {
-                admin.call('display', { uid: tv, source: 'https://nu.nl' })
-            }
-        }, {})
-    };
-
-    window.admin.connect(host + '/admin');
-}, 5000);
