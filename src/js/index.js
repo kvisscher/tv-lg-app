@@ -30,7 +30,6 @@ const render = () => {
     if (state.uid) {
         const label = document.getElementById('label-uid');
         label.innerText = state.uid;
-        label.style = 'display: block';
     }
 };
 

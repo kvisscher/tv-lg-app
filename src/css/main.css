@@ -23,7 +23,5 @@ iframe {
     background-color: #fff;
     border-radius: 4px;
     padding: 6px 8px;
-    display: none;
-    z-index: 9999;
     opacity: .6;
 }
